@@ -1,0 +1,36 @@
+import Head from "next/head";
+import Link from "next/link";
+import { getPosts } from "../lib/posts";
+
+export async function getStaticProps() {
+  const posts = await getPosts();
+  console.log(posts);
+  return {
+    props: { posts },
+  };
+}
+
+function HomePage({ posts }) {
+  console.log("[Homepage] render", posts);
+  return (
+    <>
+      <Head>
+        <title>My Blog</title>
+      </Head>
+      <main>
+        <h1>My Blog</h1>
+        <ul>
+          {posts.map((post) => (
+            <li key={post.slug}>
+              <Link href={`/posts/${post.slug}`}>
+                <a>{post.title}</a>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </main>
+    </>
+  );
+}
+
+export default HomePage;
